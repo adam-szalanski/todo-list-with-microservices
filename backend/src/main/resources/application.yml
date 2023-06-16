@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: BACKEND
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/todo_lists
+    username: postgres
+    password: postgres
+  liquibase:
+    change-log: classpath:db/changelog/liquibase-changelog.xml
+server:
+  port: 8088

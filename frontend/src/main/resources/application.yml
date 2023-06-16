@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: FRONTEND
+server:
+  port: 3000
