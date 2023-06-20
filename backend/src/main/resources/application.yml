@@ -23,7 +23,16 @@ application:
       expiration: 86400000 # 1 day
     user-not-found-message: "User not found"
     user-already-exists-message: "User with provided email is already registered"
+    user-not-logged-in-message: "Currently there is no logged in user"
     entity-not-found-message: "Entity not found"
+springdoc:
+  swagger-ui:
+    path: /swagger
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, httpexchanges
 ---
 spring:
   config:
