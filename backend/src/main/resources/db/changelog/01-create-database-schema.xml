@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet id="create_database" author="Adam Szalanski" context="default,docker">
+        <sql splitStatements="false">
+            do $$DECLARE r record; -- users
+            begin
+                if
+            not exists (select 0 from pg_class where relname = 'user_id_seq')
+                then
+            create sequence user_id_seq;
+            end if;
+
+                if
+            not exists (select * from information_schema.tables where table_name = 'users')
+                then
+            CREATE TABLE users
+            (
+                id         BIGINT       NOT NULL DEFAULT nextval('user_id_seq'),
+                first_name VARCHAR(50)  NOT NULL,
+                last_name  VARCHAR(50)  NOT NULL,
+                email      VARCHAR(100) NOT NULL,
+                password   VARCHAR(200) NOT NULL,
+                active     BOOLEAN               DEFAULT '0' NOT NULL,
+                role       VARCHAR(30)  NOT NULL
+            );
+
+            ALTER SEQUENCE user_id_seq
+                OWNED BY users.id;
+
+            ALTER TABLE users
+                ADD CONSTRAINT users_pk PRIMARY KEY (id);
+
+            ALTER TABLE users
+                ADD CONSTRAINT users_un UNIQUE (email);
+            end if;
+            end$$;
+
+            do $$DECLARE r record; -- todo_lists
+            begin
+                if
+            not exists (select 0 from pg_class where relname = 'todo_id_seq')
+                then
+            create sequence todo_id_seq;
+            end if;
+
+                if
+            not exists (select * from information_schema.tables where table_name = 'todo_lists')
+                then
+            CREATE TABLE todo_lists
+            (
+                id          INTEGER      NOT NULL DEFAULT nextval('todo_id_seq'),
+                name        VARCHAR(150) NOT NULL,
+                description VARCHAR(255) NULL,
+                deadline    TIMESTAMP NULL,
+                user_id     INTEGER      NOT NULL
+            );
+
+            ALTER SEQUENCE todo_id_seq
+                OWNED BY todo_lists.id;
+
+            ALTER TABLE todo_lists
+                ADD CONSTRAINT todo_lists_pk PRIMARY KEY (id);
+            end if;
+            end$$;
+
+            do $$DECLARE r record; -- foreign key konstraints
+            begin
+                if
+            not exists (select *
+							   from information_schema.constraint_column_usage
+							   where constraint_name = 'users_todo_lists_fk')
+                then
+            ALTER TABLE todo_lists
+                ADD CONSTRAINT users_todo_lists_fk FOREIGN KEY (user_id)
+                    REFERENCES users (id);
+            end if;
+            end$$;
+
+
+        </sql>
+    </changeSet>
+</databaseChangeLog>

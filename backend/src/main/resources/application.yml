@@ -8,5 +8,26 @@ spring:
     password: postgres
   liquibase:
     change-log: classpath:db/changelog/liquibase-changelog.xml
+  jpa:
+    open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
 server:
   port: 8088
+application:
+  security:
+    jwt:
+      secret-key: 747C79770AD4C012C6BF915D5649E451F6B60D2F8887F00F8FD250D698595716
+      expiration: 86400000 # 1 day
+    user-not-found-message: "User not found"
+    user-already-exists-message: "User with provided email is already registered"
+    entity-not-found-message: "Entity not found"
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  datasource:
+    url: jdbc:postgresql://postgresql:5432/todo_lists
