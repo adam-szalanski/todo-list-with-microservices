@@ -25,6 +25,7 @@ application:
     user-already-exists-message: "User with provided email is already registered"
     user-not-logged-in-message: "Currently there is no logged in user"
     entity-not-found-message: "Entity not found"
+    access-denied-message: "User not permitted to perform this action"
 springdoc:
   swagger-ui:
     path: /swagger
