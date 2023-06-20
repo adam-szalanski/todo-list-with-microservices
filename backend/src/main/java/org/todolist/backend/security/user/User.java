@@ -20,6 +20,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
@@ -29,8 +30,8 @@ public class User implements UserDetails {
             sequenceName = "public.user_id_seq",
             allocationSize = 1
     )
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "user_id")
+    private Long userId;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
@@ -45,7 +46,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<TodoListEntity> todoList;
 
     @Override
@@ -55,7 +56,6 @@ public class User implements UserDetails {
 
 
     @Override
-
     public String getUsername() {
         return email;
     }
