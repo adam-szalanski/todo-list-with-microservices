@@ -1,7 +1,6 @@
 package org.todolist.backend.security.user;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,7 +36,6 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
     @Column(name = "email")
-    @Email
     private String email;
     @Column(name = "password")
     private String password;
@@ -45,7 +43,6 @@ public class User implements UserDetails {
     private Boolean isActive;
     @Enumerated(EnumType.STRING)
     private Role role;
-
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<TodoListEntity> todoList;
 
@@ -53,7 +50,6 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
-
 
     @Override
     public String getUsername() {

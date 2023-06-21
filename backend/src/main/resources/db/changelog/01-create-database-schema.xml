@@ -52,7 +52,7 @@
             CREATE TABLE todo_lists
             (
                 id          INTEGER      NOT NULL DEFAULT nextval('todo_id_seq'),
-                name        VARCHAR(150) NOT NULL,
+                name        VARCHAR(50) NOT NULL,
                 description VARCHAR(255) NULL,
                 deadline    TIMESTAMP NULL,
                 finished    BOOLEAN DEFAULT 'false',
