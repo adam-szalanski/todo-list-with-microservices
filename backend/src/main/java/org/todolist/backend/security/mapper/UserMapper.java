@@ -12,9 +12,10 @@ public abstract class UserMapper {
     @Mapping(target = "lastName", source = "lastName")
     @Mapping(target = "email", source = "email")
     @Mapping(target = "isActive", constant = "false")
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "userId", ignore = true)
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "role", constant = "ROLE_USER")
+    @Mapping(target = "todoList", expression = "java(new java.util.ArrayList<>())")
     public abstract User fromRequest(RegistrationRequest registrationRequest);
 
 }

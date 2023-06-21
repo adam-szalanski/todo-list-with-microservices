@@ -1,10 +1,7 @@
 package org.todolist.backend.todolists;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.todolist.backend.security.user.User;
 
 import java.time.ZonedDateTime;
@@ -15,6 +12,7 @@ import java.time.ZonedDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class TodoListEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "todo_generator")
@@ -36,8 +34,10 @@ public class TodoListEntity {
     @Column(name = "deadline")
     private ZonedDateTime deadline;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("id")
-    @JoinColumn(name = "user_id", nullable = false)
+    @Column(name = "finished")
+    private boolean isFinished;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 }

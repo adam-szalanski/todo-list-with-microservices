@@ -8,6 +8,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.todolist.backend.exceptions.custom.UserNotLoggedInException;
+
+import java.nio.file.AccessDeniedException;
 
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
@@ -16,12 +19,22 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     private String USER_ALREADY_EXISTS;
     @Value("${application.security.user-not-found-message}")
     private String USER_NOT_FOUND;
+    @Value("${application.security.user-not-logged-in-message}")
+    private String USER_NOT_LOGGED_IN;
     @Value("${application.security.entity-not-found-message}")
     private String ENTITY_NOT_FOUND;
+    @Value("${application.security.access-denied-message}")
+    private String ACCESS_DENIED;
 
     @ExceptionHandler(IllegalArgumentException.class)
     protected ResponseEntity<ErrorDetails> handleUserAlreadyExists() {
         ErrorDetails errorDetails = new ErrorDetails(HttpStatus.BAD_REQUEST.value(), USER_ALREADY_EXISTS);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(errorDetails);
+    }
+
+    @ExceptionHandler(UserNotLoggedInException.class)
+    protected ResponseEntity<ErrorDetails> handleUserNotLoggedIn() {
+        ErrorDetails errorDetails = new ErrorDetails(HttpStatus.BAD_REQUEST.value(), USER_NOT_LOGGED_IN);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(errorDetails);
     }
 
@@ -35,5 +48,11 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<ErrorDetails> handleEntityNotFound() {
         ErrorDetails errorDetails = new ErrorDetails(HttpStatus.NOT_FOUND.value(), ENTITY_NOT_FOUND);
         return ResponseEntity.status(HttpStatus.NOT_FOUND.value()).body(errorDetails);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    protected ResponseEntity<ErrorDetails> handleAccessDenied() {
+        ErrorDetails errorDetails = new ErrorDetails(HttpStatus.UNAUTHORIZED.value(), ACCESS_DENIED);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(errorDetails);
     }
 }
