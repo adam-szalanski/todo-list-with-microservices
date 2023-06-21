@@ -55,6 +55,7 @@
                 name        VARCHAR(150) NOT NULL,
                 description VARCHAR(255) NULL,
                 deadline    TIMESTAMP NULL,
+                finished    BOOLEAN DEFAULT 'false',
                 user_id     INTEGER      NOT NULL
             );
 

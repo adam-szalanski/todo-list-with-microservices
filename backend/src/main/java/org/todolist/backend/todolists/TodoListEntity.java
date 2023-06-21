@@ -34,6 +34,9 @@ public class TodoListEntity {
     @Column(name = "deadline")
     private ZonedDateTime deadline;
 
+    @Column(name = "finished")
+    private boolean isFinished;
+
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;

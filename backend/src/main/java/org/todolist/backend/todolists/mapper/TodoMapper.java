@@ -13,6 +13,7 @@ public abstract class TodoMapper {
     @Mapping(target = "taskName", source = "taskName")
     @Mapping(target = "description", source = "description")
     @Mapping(target = "deadline", source = "deadline")
+    @Mapping(target = "finished", source = "isFinished")
     @Mapping(target = "user", ignore = true)
     public abstract TodoListEntity fromRequest(TodoRequest todoRequest);
 
@@ -20,6 +21,7 @@ public abstract class TodoMapper {
     @Mapping(target = "taskName", source = "taskName")
     @Mapping(target = "deadline", source = "deadline")
     @Mapping(target = "description", source = "description")
+    @Mapping(target = "isFinished", source = "finished")
     @Mapping(target = "userId", source = "user.userId")
     public abstract TodoResponse toResponse(TodoListEntity todoListEntity);
 

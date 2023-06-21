@@ -28,7 +28,6 @@ public class TodoListService {
                 .collect(Collectors.toList());
     }
 
-
     public TodoResponse getOne(Long id) throws AccessDeniedException {
         TodoListEntity todo = todoListRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         if (!todo.getUser().getUsername().equals(currentUserUtility.getCurrentUser().getUsername()))
@@ -51,6 +50,7 @@ public class TodoListService {
         todo.setTaskName(todoRequest.taskName());
         todo.setDeadline(todoRequest.deadline());
         todo.setDescription(todoRequest.description());
+        todo.setFinished(todoRequest.isFinished());
         TodoListEntity savedTodo = todoListRepository.save(todo);
         return todoMapper.toResponse(savedTodo);
     }
