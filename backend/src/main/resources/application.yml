@@ -23,6 +23,7 @@ application:
       expiration: 86400000 # 1 day
     user-not-found-message: "User not found"
     user-already-exists-message: "User with provided email is already registered"
+    access-denied-message: "User not permitted to perform this action"
     user-not-logged-in-message: "Currently there is no logged in user"
     entity-not-found-message: "Entity not found"
 springdoc:
