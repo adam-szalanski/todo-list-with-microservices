@@ -1,5 +1,32 @@
+server:
+  port: 8080
 spring:
   application:
     name: GATEWAY
-server:
-  port: 8080
+  cloud:
+    gateway:
+      routes:
+        - id: backend
+          uri: http://localhost:8088
+          predicates:
+            - Path=/todo/**, /auth/**, /metrics/**
+        - id: frontend
+          uri: http://localhost:3000
+          predicates:
+            - Path=/**
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  cloud:
+    gateway:
+      routes:
+        - id: backend
+          uri: http://backend:8088
+          predicates:
+            - Path=/todo/**, /auth/**, /metrics/**
+        - id: frontend
+          uri: http://frontend:3000
+          predicates:
+            - Path=/**
