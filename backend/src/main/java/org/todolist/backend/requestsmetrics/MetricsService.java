@@ -9,6 +9,7 @@ import org.todolist.backend.requestsmetrics.dto.response.MetricsResponse;
 @RequiredArgsConstructor
 public class MetricsService {
     private final HttpExchangeRepository httpExchangeRepository;
+
     public MetricsResponse getRequestsCount() {
         return new MetricsResponse(httpExchangeRepository.findAll().size());
     }

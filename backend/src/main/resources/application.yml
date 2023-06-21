@@ -26,6 +26,7 @@ application:
     access-denied-message: "User not permitted to perform this action"
     user-not-logged-in-message: "Currently there is no logged in user"
     entity-not-found-message: "Entity not found"
+    validation-error-message: "Provided data didn't pass validation"
 springdoc:
   swagger-ui:
     path: /swagger

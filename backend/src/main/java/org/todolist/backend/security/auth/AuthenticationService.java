@@ -1,5 +1,6 @@
 package org.todolist.backend.security.auth;
 
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +17,8 @@ import org.todolist.backend.security.mapper.UserMapper;
 import org.todolist.backend.security.user.User;
 import org.todolist.backend.security.user.UserRepository;
 
+import static org.todolist.backend.util.ValidationUtility.PASSWORD_MATCHES_VALIDATION_FAILED;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -31,6 +34,8 @@ public class AuthenticationService {
     private String USER_ALREADY_EXISTS_MESSAGE;
 
     public AuthenticationResponse register(RegistrationRequest registrationRequest) {
+        if (!registrationRequest.password().equals(registrationRequest.passwordRepeated()))
+            throw new ValidationException(PASSWORD_MATCHES_VALIDATION_FAILED);
         if (userRepository.existsByEmail(registrationRequest.email()))
             throw new IllegalArgumentException(USER_ALREADY_EXISTS_MESSAGE);
         User user = userMapper.fromRequest(registrationRequest);

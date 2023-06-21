@@ -1,5 +1,6 @@
 package org.todolist.backend.todolists;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +27,12 @@ public class TodoListController {
     }
 
     @PostMapping
-    public ResponseEntity<TodoResponse> createTodo(@RequestBody TodoRequest todoRequest) {
+    public ResponseEntity<TodoResponse> createTodo(@Valid @RequestBody TodoRequest todoRequest) {
         return ResponseEntity.ok(todoListService.create(todoRequest));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TodoResponse> updateTodo(@PathVariable("id") Long id, @RequestBody TodoRequest todoRequest) throws AccessDeniedException {
+    public ResponseEntity<TodoResponse> updateTodo(@PathVariable("id") Long id, @Valid @RequestBody TodoRequest todoRequest) throws AccessDeniedException {
         return ResponseEntity.ok(todoListService.update(id, todoRequest));
     }
 

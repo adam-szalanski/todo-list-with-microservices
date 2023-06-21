@@ -14,7 +14,7 @@ public class MetricsController {
     private final MetricsService metricsService;
 
     @GetMapping("/requests")
-    public ResponseEntity<MetricsResponse> getRequestsCount(){
+    public ResponseEntity<MetricsResponse> getRequestsCount() {
         return ResponseEntity.ok(metricsService.getRequestsCount());
     }
 }

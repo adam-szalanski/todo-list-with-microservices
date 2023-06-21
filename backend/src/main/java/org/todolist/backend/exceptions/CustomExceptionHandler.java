@@ -1,16 +1,25 @@
 package org.todolist.backend.exceptions;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.todolist.backend.exceptions.custom.UserNotLoggedInException;
+import org.todolist.backend.exceptions.errorresponses.ErrorDetails;
+import org.todolist.backend.exceptions.errorresponses.MultipleErrorDetails;
 
 import java.nio.file.AccessDeniedException;
+import java.util.HashSet;
+import java.util.Set;
 
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
@@ -25,34 +34,64 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     private String ENTITY_NOT_FOUND;
     @Value("${application.security.access-denied-message}")
     private String ACCESS_DENIED;
+    @Value("${application.security.validation-error-message}")
+    private String DEFAULT_VALIDATION_ERROR;
 
     @ExceptionHandler(IllegalArgumentException.class)
     protected ResponseEntity<ErrorDetails> handleUserAlreadyExists() {
-        ErrorDetails errorDetails = new ErrorDetails(HttpStatus.BAD_REQUEST.value(), USER_ALREADY_EXISTS);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(errorDetails);
+        return createErrorResponse(HttpStatus.BAD_REQUEST, USER_ALREADY_EXISTS);
     }
 
     @ExceptionHandler(UserNotLoggedInException.class)
     protected ResponseEntity<ErrorDetails> handleUserNotLoggedIn() {
-        ErrorDetails errorDetails = new ErrorDetails(HttpStatus.BAD_REQUEST.value(), USER_NOT_LOGGED_IN);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(errorDetails);
+        return createErrorResponse(HttpStatus.BAD_REQUEST, USER_NOT_LOGGED_IN);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
     protected ResponseEntity<ErrorDetails> handleUserNotFound() {
-        ErrorDetails errorDetails = new ErrorDetails(HttpStatus.NOT_FOUND.value(), USER_NOT_FOUND);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND.value()).body(errorDetails);
+        return createErrorResponse(HttpStatus.NOT_FOUND, USER_NOT_FOUND);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<ErrorDetails> handleEntityNotFound() {
-        ErrorDetails errorDetails = new ErrorDetails(HttpStatus.NOT_FOUND.value(), ENTITY_NOT_FOUND);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND.value()).body(errorDetails);
+        return createErrorResponse(HttpStatus.NOT_FOUND, ENTITY_NOT_FOUND);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     protected ResponseEntity<ErrorDetails> handleAccessDenied() {
-        ErrorDetails errorDetails = new ErrorDetails(HttpStatus.UNAUTHORIZED.value(), ACCESS_DENIED);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(errorDetails);
+        return createErrorResponse(HttpStatus.UNAUTHORIZED, ACCESS_DENIED);
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    protected ResponseEntity<ErrorDetails> handleValidationException(ValidationException e) {
+        return createErrorResponse(HttpStatus.BAD_REQUEST, e);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    protected ResponseEntity<MultipleErrorDetails> handleConstraintValidation(ConstraintViolationException e) {
+        Set<String> errorMessages = new HashSet<>();
+        for (ConstraintViolation<?> constraintViolation : e.getConstraintViolations())
+            errorMessages.add(constraintViolation.getMessage());
+        MultipleErrorDetails errorDetails = new MultipleErrorDetails(HttpStatus.BAD_REQUEST.value(), errorMessages);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(errorDetails);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        Set<String> errorMessages = new HashSet<>();
+        for (ObjectError error : ex.getAllErrors())
+            errorMessages.add(error.getDefaultMessage());
+        MultipleErrorDetails errorDetails = new MultipleErrorDetails(HttpStatus.BAD_REQUEST.value(), errorMessages);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).contentType(MediaType.APPLICATION_JSON).body(errorDetails);
+    }
+
+    private ResponseEntity<ErrorDetails> createErrorResponse(HttpStatus status, Exception e) {
+        ErrorDetails errorDetails = new ErrorDetails(status.value(), e.getMessage());
+        return ResponseEntity.status(status.value()).body(errorDetails);
+    }
+
+    private ResponseEntity<ErrorDetails> createErrorResponse(HttpStatus status, String message) {
+        ErrorDetails errorDetails = new ErrorDetails(status.value(), message);
+        return ResponseEntity.status(status.value()).body(errorDetails);
     }
 }
