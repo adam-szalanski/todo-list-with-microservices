@@ -2,8 +2,6 @@ package org.todolist.backend.todolists.mapper;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,9 +14,6 @@ import org.todolist.backend.todolists.dto.response.TodoResponse;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -36,12 +31,12 @@ class TodoMapperTest {
         TodoListEntity outcome = todoMapper.fromRequest(todoRequest);
 
         //then
-        assertEquals(expectedMappedEntity.getId(),outcome.getId());
-        assertEquals(expectedMappedEntity.isFinished(),outcome.isFinished());
-        assertEquals(expectedMappedEntity.getUser(),outcome.getUser());
-        assertEquals(expectedMappedEntity.getDeadline(),outcome.getDeadline());
-        assertEquals(expectedMappedEntity.getDescription(),outcome.getDescription());
-        assertEquals(expectedMappedEntity.getTaskName(),outcome.getTaskName());
+        assertEquals(expectedMappedEntity.getId(), outcome.getId());
+        assertEquals(expectedMappedEntity.isFinished(), outcome.isFinished());
+        assertEquals(expectedMappedEntity.getUser(), outcome.getUser());
+        assertEquals(expectedMappedEntity.getDeadline(), outcome.getDeadline());
+        assertEquals(expectedMappedEntity.getDescription(), outcome.getDescription());
+        assertEquals(expectedMappedEntity.getTaskName(), outcome.getTaskName());
     }
 
     @Test
@@ -54,11 +49,11 @@ class TodoMapperTest {
         TodoResponse outcome = todoMapper.toResponse(expectedMappedEntity);
 
         //then
-        assertEquals(expectedOutcome.id(),outcome.id());
-        assertEquals(expectedOutcome.isFinished(),outcome.isFinished());
-        assertEquals(expectedOutcome.userId(),outcome.userId());
-        assertEquals(expectedOutcome.deadline(),outcome.deadline());
-        assertEquals(expectedOutcome.description(),outcome.description());
-        assertEquals(expectedOutcome.taskName(),outcome.taskName());
+        assertEquals(expectedOutcome.id(), outcome.id());
+        assertEquals(expectedOutcome.isFinished(), outcome.isFinished());
+        assertEquals(expectedOutcome.userId(), outcome.userId());
+        assertEquals(expectedOutcome.deadline(), outcome.deadline());
+        assertEquals(expectedOutcome.description(), outcome.description());
+        assertEquals(expectedOutcome.taskName(), outcome.taskName());
     }
 }
