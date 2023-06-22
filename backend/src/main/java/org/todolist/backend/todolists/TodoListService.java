@@ -2,6 +2,7 @@ package org.todolist.backend.todolists;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.todolist.backend.security.user.User;
@@ -25,14 +26,15 @@ public class TodoListService {
     private final TodoMapper todoMapper;
     private final CurrentUserUtility currentUserUtility;
 
-    public List<TodoResponse> getAll(Boolean finished, ZonedDateTime before, ZonedDateTime after) {
+    public List<TodoResponse> getAll(String sortField, boolean orderDesc, Boolean finished, ZonedDateTime before, ZonedDateTime after) {
         return todoListRepository.findAll(
                         Specification.allOf(
                                 ownedByCurrentUser(currentUserUtility.getCurrentUser()),
                                 isFinished(finished),
                                 deadlineBefore(before),
-                                deadlineAfter(after)
-                        ))
+                                deadlineAfter(after))
+                        , Sort.by(orderDesc ? Sort.Direction.DESC : Sort.Direction.ASC, sortField)
+                )
                 .stream()
                 .map(todoMapper::toResponse)
                 .collect(Collectors.toList());

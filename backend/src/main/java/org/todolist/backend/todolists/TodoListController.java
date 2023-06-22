@@ -20,8 +20,10 @@ public class TodoListController {
     @GetMapping
     public ResponseEntity<List<TodoResponse>> getAllTodo(@RequestParam(value = "finished", required = false) Boolean finished,
                                                          @RequestParam(value = "dateBefore", required = false) ZonedDateTime before,
-                                                         @RequestParam(value = "dateAfter", required = false) ZonedDateTime after) {
-        return ResponseEntity.ok(todoListService.getAll(finished, before, after));
+                                                         @RequestParam(value = "dateAfter", required = false) ZonedDateTime after,
+                                                         @RequestParam(value = "sortBy", required = false) String sortField,
+                                                         @RequestParam(value = "orderDesc", required = false) boolean orderDesc) {
+        return ResponseEntity.ok(todoListService.getAll(sortField, orderDesc, finished, before, after));
     }
 
     @GetMapping("/{id}")
