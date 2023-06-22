@@ -2,6 +2,7 @@ package org.todolist.backend.todolists;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.todolist.backend.security.user.User;
 import org.todolist.backend.security.util.CurrentUserUtility;
@@ -10,8 +11,11 @@ import org.todolist.backend.todolists.dto.response.TodoResponse;
 import org.todolist.backend.todolists.mapper.TodoMapper;
 
 import java.nio.file.AccessDeniedException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.todolist.backend.todolists.TodoSpecification.*;
 
 
 @Service
@@ -21,9 +25,15 @@ public class TodoListService {
     private final TodoMapper todoMapper;
     private final CurrentUserUtility currentUserUtility;
 
-    public List<TodoResponse> getAll() {
-        return todoListRepository.findAll().stream()
-                .filter(todoListEntity -> todoListEntity.getUser().getUsername().equals(currentUserUtility.getCurrentUser().getUsername()))
+    public List<TodoResponse> getAll(Boolean finished, ZonedDateTime before, ZonedDateTime after) {
+        return todoListRepository.findAll(
+                        Specification.allOf(
+                                ownedByCurrentUser(currentUserUtility.getCurrentUser()),
+                                isFinished(finished),
+                                deadlineBefore(before),
+                                deadlineAfter(after)
+                        ))
+                .stream()
                 .map(todoMapper::toResponse)
                 .collect(Collectors.toList());
     }
