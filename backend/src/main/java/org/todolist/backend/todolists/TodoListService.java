@@ -27,6 +27,8 @@ public class TodoListService {
     private final CurrentUserUtility currentUserUtility;
 
     public List<TodoResponse> getAll(String sortField, boolean orderDesc, Boolean finished, ZonedDateTime before, ZonedDateTime after) {
+        if (sortField == null)
+            sortField = "id";
         return todoListRepository.findAll(
                         Specification.allOf(
                                 ownedByCurrentUser(currentUserUtility.getCurrentUser()),

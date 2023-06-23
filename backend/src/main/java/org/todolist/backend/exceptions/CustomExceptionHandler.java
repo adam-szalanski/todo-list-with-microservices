@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.todolist.backend.exceptions.custom.PasswordValidationFailedException;
+import org.todolist.backend.exceptions.custom.UserAlreadyRegisteredException;
 import org.todolist.backend.exceptions.custom.UserNotLoggedInException;
 import org.todolist.backend.exceptions.errorresponses.ErrorDetails;
 import org.todolist.backend.exceptions.errorresponses.MultipleErrorDetails;
@@ -37,7 +39,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @Value("${application.security.validation-error-message}")
     private String DEFAULT_VALIDATION_ERROR;
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler(UserAlreadyRegisteredException.class)
     protected ResponseEntity<ErrorDetails> handleUserAlreadyExists() {
         return createErrorResponse(HttpStatus.BAD_REQUEST, USER_ALREADY_EXISTS);
     }
@@ -62,8 +64,18 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return createErrorResponse(HttpStatus.UNAUTHORIZED, ACCESS_DENIED);
     }
 
+    @ExceptionHandler(PasswordValidationFailedException.class)
+    protected ResponseEntity<ErrorDetails> handlePasswordValidation(PasswordValidationFailedException e) {
+        return createErrorResponse(HttpStatus.BAD_REQUEST, e);
+    }
+
     @ExceptionHandler(ValidationException.class)
-    protected ResponseEntity<ErrorDetails> handleValidationException(ValidationException e) {
+    protected ResponseEntity<ErrorDetails> handleValidation(ValidationException e) {
+        return createErrorResponse(HttpStatus.BAD_REQUEST, e);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    protected ResponseEntity<ErrorDetails> handleIllegalArgument(IllegalArgumentException e) {
         return createErrorResponse(HttpStatus.BAD_REQUEST, e);
     }
 
