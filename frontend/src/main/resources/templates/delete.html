@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Tasks</title>
+</head>
+<body>
+<div class="menu">
+  <h1>TO DO List</h1>
+  <h5>TASKS</h5>
+</div>
+<div class="content">
+  <div class="todo-form">
+    <form th:action="@{/delete/{id}(id=${deletedTask.id})}" method="post">
+      <label for="taskname">Nazwa zadania:</label>
+      <input type="text" id="taskname" name="taskName" placeholder="Podaj nazwę zadania" th:value="${deletedTask.taskName}" disabled>
+      <label for="description">Opis:</label>
+      <input type="text" id="description" name="description" placeholder="Podaj opis zadania" th:value="${deletedTask.description}" disabled>
+      <label for="deadline">Deadline:</label>
+      <input type="datetime-local" id="deadline" name="deadline" placeholder="Podaj deadline" th:value="${deletedTask.deadline}"disabled>
+      <label for="isFinished">Zakończone:</label>
+      <select class="form-select" name="isFinished" id="isFinished" disabled>
+        <option value="false" selected>Nie</option>
+        <option value="true" th:selected="${deletedTask.isFinished()}">Tak</option>
+      </select>
+      <div>
+        <button>Usuń zadanie</button>
+      </div>
+    </form>
+  </div>
+</div>
+</body>

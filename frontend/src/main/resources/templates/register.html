@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <title>Rejestracja</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<form th:action="@{/register}" method="post">
+    <label for="firstName">Imię:</label>
+    <input type="text" id="firstName" name="firstName" placeholder="Podaj imię" required autofocus>
+    <label for="lastName">Nazwisko:</label>
+    <input type="text" id="lastName" name="lastName" placeholder="Podaj nazwisko" required>
+    <label for="email">E-mail:</label>
+    <input type="email" id="email" name="email" placeholder="Podaj e-mail" required>
+    <label for="password">Hasło:</label>
+    <input type="password" id="password" placeholder="Podaj hasło" name="password" minlength="8" required>
+    <label for="passwordRepeated">Powtórz hasło:</label>
+    <input type="password" id="passwordRepeated" placeholder="Powtórz hasło" name="passwordRepeated" minlength="8"
+           required>
+    <div>
+        <button>Zarejestruj</button>
+    </div>
+</form>
+</div>
+
+</body>
+</html>
