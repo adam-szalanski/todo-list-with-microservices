@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.todolist.frontend.web.requests.AuthenticationRequest;
-import org.todolist.frontend.web.requests.RegistrationRequest;
-import org.todolist.frontend.web.requests.TodoRequestCreate;
-import org.todolist.frontend.web.requests.TodoRequestUpdate;
+import org.todolist.frontend.web.requests.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,6 +17,7 @@ public class WebController {
     @RequestMapping({"/", "/index"})
     public String index(Model model) {
         if (WebService.jwtToken != null) {
+            model.addAttribute("loggedIn", "true");
             model.addAttribute("todoList", webService.getAllTodo());
         }
         model.addAttribute("requestCount", webService.getRequestsCount().count() + 1);
@@ -33,7 +31,6 @@ public class WebController {
 
     @RequestMapping("/register")
     String register(@ModelAttribute RegistrationRequest registrationRequest, Model model) {
-        model.addAttribute("loggedIn", "true");
         webService.register(registrationRequest);
         return index(model);
     }
@@ -45,14 +42,17 @@ public class WebController {
 
     @RequestMapping("/login")
     String login(@ModelAttribute AuthenticationRequest authenticationRequest, Model model) {
-        model.addAttribute("loggedIn", "true");
         webService.login(authenticationRequest);
+        return index(model);
+    }
+    @RequestMapping("/logout")
+    String logout(Model model) {
+        webService.logout();
         return index(model);
     }
 
     @RequestMapping("/addTodo")
     String addTodo(@ModelAttribute TodoRequestCreate todoRequestCreate, Model model) {
-        model.addAttribute("loggedIn", "true");
         webService.createTodo(todoRequestCreate);
         return index(model);
     }
@@ -65,7 +65,6 @@ public class WebController {
 
     @RequestMapping("/edit/{id}")
     String editTask(@ModelAttribute TodoRequestUpdate todoRequestUpdate, @PathVariable("id") Long id, Model model) {
-        model.addAttribute("loggedIn", "true");
         webService.updateTodo(id, todoRequestUpdate);
         return index(model);
     }
@@ -77,8 +76,33 @@ public class WebController {
 
     @RequestMapping("/delete/{id}")
     String confirmDeleteTask(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("loggedIn", "true");
         webService.deleteTodo(id);
+        return index(model);
+    }
+    @GetMapping("/sortByName")
+    String sortByName(Model model) {
+        webService.sortByName();
+        return index(model);
+    }
+
+    @GetMapping("sortByDescription")
+    String sortByDescription(Model model) {
+        webService.sortByDescription();
+        return index(model);
+    }
+    @GetMapping("sortByDeadline")
+    String sortByDeadline(Model model) {
+        webService.sortByDeadline();
+        return index(model);
+    }
+    @GetMapping("sortByIsFinished")
+    String sortByIsFinished(Model model) {
+        webService.sortByIsFinished();
+        return index(model);
+    }
+    @RequestMapping ("filter")
+    String filter(@ModelAttribute FilterRequest filterRequest, Model model) {
+        webService.filter(filterRequest);
         return index(model);
     }
 }

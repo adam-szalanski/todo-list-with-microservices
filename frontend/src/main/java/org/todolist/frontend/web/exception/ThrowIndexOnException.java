@@ -11,7 +11,8 @@ import org.todolist.frontend.web.WebController;
 public class ThrowIndexOnException {
     private final WebController webController;
     @ExceptionHandler(Exception.class)
-    protected String redirectToIndex(Model model) {
+    protected String redirectToIndex(Exception e, Model model) {
+        model.addAttribute("errorMessage", e.getMessage());
         return webController.index(model);
     }
 }
