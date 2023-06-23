@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tasks</title>
+</head>
+<body>
+<div class="menu" th:if="!${loggedIn}">
+    <a th:href="@{/login}">Zaloguj się</a>
+    <a th:href="@{/register}">Zarejestruj się</a>
+</div>
+<div class="content"  th:if="${loggedIn}">
+    <div class="todo-list">
+    <table>
+        <tr th:each="todo: ${todoList}">
+            <td><a th:text="${todo.taskName}" th:href="@{/edit/{id}(id=${todo.id})}"/></td>
+            <td th:text="${todo.description}"/>
+            <td th:text="${#temporals.format(todo.deadline, 'dd-MM-yyyy HH:mm:ss')}"/>
+            <td><input type="checkbox" th:checked="${todo.isFinished}" disabled></td>
+            <td><a th:text="USUŃ" th:href="@{/delete/{id}(id=${todo.id})}"/></td>
+        </tr>
+    </table>
+    </div>
+    <div class="todo-form">
+        <form th:action="@{/addTodo}" method="post">
+            <label for="taskname">Nazwa zadania:</label>
+            <input type="text" id="taskname" name="taskName" placeholder="Podaj nazwę zadania" required autofocus>
+            <label for="description">Opis:</label>
+            <input type="text" id="description" name="description" placeholder="Podaj opis zadania" required>
+            <label for="deadline">Deadline:</label>
+            <input type="datetime-local" id="deadline" name="deadline" placeholder="Podaj deadline" >
+            <div>
+                <button>Dodaj zadanie</button>
+            </div>
+        </form>
+    </div>
+</div>
+<a th:text="${requestCount}"/>
+</body>

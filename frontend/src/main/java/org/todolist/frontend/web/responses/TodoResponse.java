@@ -1,7 +1,6 @@
-package org.todolist.backend.todolists.dto.response;
+package org.todolist.frontend.web.responses;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 public record TodoResponse(Long id, String taskName, String description, LocalDateTime deadline, Long userId,
                            boolean isFinished) {

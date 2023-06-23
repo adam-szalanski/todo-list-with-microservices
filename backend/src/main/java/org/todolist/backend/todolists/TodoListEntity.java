@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.todolist.backend.security.user.User;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -32,7 +33,7 @@ public class TodoListEntity {
     private String description;
 
     @Column(name = "deadline")
-    private ZonedDateTime deadline;
+    private LocalDateTime deadline;
 
     @Column(name = "finished")
     private boolean isFinished;

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pl"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Logowanie</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <form th:action="@{/login}" method="post">
+        <label for="email" >Numer albumu</label>
+        <input type="text" id="email"  name="email" placeholder="Numer albumu" required autofocus>
+        <label for="password" >Hasło</label>
+        <input type="password" id="password" placeholder="Hasło" name="password" required>
+        <div>
+            <input type="submit" value="Zaloguj" />
+        </div>
+    </form>
+</body>
+</html>
