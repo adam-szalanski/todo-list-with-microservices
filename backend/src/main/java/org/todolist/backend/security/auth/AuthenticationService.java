@@ -1,6 +1,5 @@
 package org.todolist.backend.security.auth;
 
-import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +8,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.todolist.backend.exceptions.custom.PasswordValidationFailedException;
+import org.todolist.backend.exceptions.custom.UserAlreadyRegisteredException;
 import org.todolist.backend.security.auth.dto.request.AuthenticationRequest;
 import org.todolist.backend.security.auth.dto.request.RegistrationRequest;
 import org.todolist.backend.security.auth.dto.response.AuthenticationResponse;
@@ -35,9 +36,9 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegistrationRequest registrationRequest) {
         if (!registrationRequest.password().equals(registrationRequest.passwordRepeated()))
-            throw new ValidationException(PASSWORD_MATCHES_VALIDATION_FAILED);
+            throw new PasswordValidationFailedException(PASSWORD_MATCHES_VALIDATION_FAILED);
         if (userRepository.existsByEmail(registrationRequest.email()))
-            throw new IllegalArgumentException(USER_ALREADY_EXISTS_MESSAGE);
+            throw new UserAlreadyRegisteredException(USER_ALREADY_EXISTS_MESSAGE);
         User user = userMapper.fromRequest(registrationRequest);
         user.setPassword(passwordEncoder.encode(registrationRequest.password()));
         user.setIsActive(true); // normally this line would not exist and user would require email confirmation or other activation method

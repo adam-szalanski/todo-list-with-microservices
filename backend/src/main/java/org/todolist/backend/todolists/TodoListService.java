@@ -12,6 +12,7 @@ import org.todolist.backend.todolists.dto.response.TodoResponse;
 import org.todolist.backend.todolists.mapper.TodoMapper;
 
 import java.nio.file.AccessDeniedException;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +27,9 @@ public class TodoListService {
     private final TodoMapper todoMapper;
     private final CurrentUserUtility currentUserUtility;
 
-    public List<TodoResponse> getAll(String sortField, boolean orderDesc, Boolean finished, ZonedDateTime before, ZonedDateTime after) {
+    public List<TodoResponse> getAll(String sortField, boolean orderDesc, Boolean finished, LocalDateTime before, LocalDateTime after) {
+        if (sortField == null)
+            sortField = "id";
         return todoListRepository.findAll(
                         Specification.allOf(
                                 ownedByCurrentUser(currentUserUtility.getCurrentUser()),

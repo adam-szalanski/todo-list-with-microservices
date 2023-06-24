@@ -1,0 +1,20 @@
+/* Global styles */
+*, *:after, *:before {
+    box-sizing: border-box;
+}
+
+.menu{
+    clear: both;
+    background-color: #343a40;
+}
+
+.menu a{
+    color: white;
+}
+
+.content-menu{
+    float: right;
+}
+.todo-list{
+    float: left;
+}

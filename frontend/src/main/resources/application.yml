@@ -3,3 +3,12 @@ spring:
     name: FRONTEND
 server:
   port: 3000
+links:
+  gateway-base: localhost:8080
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+links:
+  gateway-base: gateway:8080

@@ -8,6 +8,7 @@ import org.todolist.backend.todolists.dto.request.TodoRequest;
 import org.todolist.backend.todolists.dto.response.TodoResponse;
 
 import java.nio.file.AccessDeniedException;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -19,8 +20,8 @@ public class TodoListController {
 
     @GetMapping
     public ResponseEntity<List<TodoResponse>> getAllTodo(@RequestParam(value = "finished", required = false) Boolean finished,
-                                                         @RequestParam(value = "dateBefore", required = false) ZonedDateTime before,
-                                                         @RequestParam(value = "dateAfter", required = false) ZonedDateTime after,
+                                                         @RequestParam(value = "dateBefore", required = false) LocalDateTime before,
+                                                         @RequestParam(value = "dateAfter", required = false) LocalDateTime after,
                                                          @RequestParam(value = "sortBy", required = false) String sortField,
                                                          @RequestParam(value = "orderDesc", required = false) boolean orderDesc) {
         return ResponseEntity.ok(todoListService.getAll(sortField, orderDesc, finished, before, after));

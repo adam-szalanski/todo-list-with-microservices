@@ -26,11 +26,12 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
-                                .requestMatchers("/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger", "/actuator/**")
+                                .requestMatchers("/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger", "/metrics/**")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )
+                .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer.logoutUrl("/auth/logout"))
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

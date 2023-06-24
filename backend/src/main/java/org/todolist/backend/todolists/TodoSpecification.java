@@ -3,6 +3,7 @@ package org.todolist.backend.todolists;
 import org.springframework.data.jpa.domain.Specification;
 import org.todolist.backend.security.user.User;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 public class TodoSpecification {
@@ -20,7 +21,7 @@ public class TodoSpecification {
         );
     }
 
-    public static Specification<TodoListEntity> deadlineBefore(ZonedDateTime date) {
+    public static Specification<TodoListEntity> deadlineBefore(LocalDateTime date) {
         return (root, query, criteriaBuilder) -> {
             if (date == null)
                 return criteriaBuilder.isTrue(root.isNotNull());
@@ -30,7 +31,7 @@ public class TodoSpecification {
         };
     }
 
-    public static Specification<TodoListEntity> deadlineAfter(ZonedDateTime date) {
+    public static Specification<TodoListEntity> deadlineAfter(LocalDateTime date) {
         return (root, query, criteriaBuilder) -> {
             if (date == null)
                 return criteriaBuilder.isTrue(root.isNotNull());

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edytuj zadanie</title>
+    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{style.css}" rel="stylesheet" type="text/css">
+    <style>
+        .menu{
+            clear: both;
+            background-color: #343a40;
+        }
+
+        .menu a{
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="menu">
+    <div class="d-flex justify-content-center">
+        <a class="btn btn-outline-light" th:href="@{/index}">Powrót</a>
+    </div>
+</div>
+<div class="content">
+    <h1>Edytuj zadanie</h1>
+    <div class="todo-form">
+        <form th:action="@{/edit/{id}(id=${editedTask.id})}" method="post">
+            <div class="mb-3">
+                <label for="taskname" class="form-label">Nazwa zadania:</label>
+                <input type="text" class="form-control" id="taskname" name="taskName" placeholder="Podaj nazwę zadania"
+                       th:value="${editedTask.taskName}" required autofocus>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Opis:</label>
+                <input type="text" class="form-control" id="description" name="description"
+                       placeholder="Podaj opis zadania" th:value="${editedTask.description}" required>
+            </div>
+            <div class="mb-3">
+                <label for="deadline" class="form-label">Deadline:</label>
+                <input type="datetime-local" class="form-control" id="deadline" name="deadline"
+                       placeholder="Podaj deadline" th:value="${editedTask.deadline}">
+            </div>
+            <div class="mb-3">
+                <label for="isFinished" class="form-label">Zakończone:</label>
+                <select class="form-select" name="isFinished" id="isFinished">
+                    <option value="false" selected>Nie</option>
+                    <option value="true" th:selected="${editedTask.isFinished()}">Tak</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-primary">Edytuj zadanie</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
