@@ -45,6 +45,7 @@ public class WebController {
         webService.login(authenticationRequest);
         return index(model);
     }
+
     @RequestMapping("/logout")
     String logout(Model model) {
         webService.logout();
@@ -68,6 +69,7 @@ public class WebController {
         webService.updateTodo(id, todoRequestUpdate);
         return index(model);
     }
+
     @GetMapping("/delete/{id}")
     String deleteTask(@PathVariable("id") Long id, Model model) {
         model.addAttribute("deletedTask", webService.getOneTodo(id));
@@ -79,6 +81,7 @@ public class WebController {
         webService.deleteTodo(id);
         return index(model);
     }
+
     @GetMapping("/sortByName")
     String sortByName(Model model) {
         webService.sortByName();
@@ -90,17 +93,20 @@ public class WebController {
         webService.sortByDescription();
         return index(model);
     }
+
     @GetMapping("sortByDeadline")
     String sortByDeadline(Model model) {
         webService.sortByDeadline();
         return index(model);
     }
+
     @GetMapping("sortByIsFinished")
     String sortByIsFinished(Model model) {
         webService.sortByIsFinished();
         return index(model);
     }
-    @RequestMapping ("filter")
+
+    @RequestMapping("filter")
     String filter(@ModelAttribute FilterRequest filterRequest, Model model) {
         webService.filter(filterRequest);
         return index(model);

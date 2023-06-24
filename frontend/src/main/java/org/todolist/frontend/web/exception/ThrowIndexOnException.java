@@ -10,6 +10,7 @@ import org.todolist.frontend.web.WebController;
 @RequiredArgsConstructor
 public class ThrowIndexOnException {
     private final WebController webController;
+
     @ExceptionHandler(Exception.class)
     protected String redirectToIndex(Exception e, Model model) {
         model.addAttribute("errorMessage", e.getMessage());

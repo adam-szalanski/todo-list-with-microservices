@@ -3,18 +3,30 @@
     box-sizing: border-box;
 }
 
-.menu{
+.menu {
     clear: both;
     background-color: #343a40;
 }
 
-.menu a{
+.menu a {
     color: white;
 }
 
-.content-menu{
+.content {
+    background-color: white;
+}
+
+.content-menu {
     float: right;
 }
-.todo-list{
+
+.todo-list {
     float: left;
+}
+
+footer {
+    clear: both;
+    text-align: center;
+    color: white;
+    background-color: #343a40;
 }

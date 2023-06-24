@@ -3,15 +3,15 @@
 <head>
     <title>Rejestracja</title>
     <meta charset="UTF-8">
-    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{style.css}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{style.css}" type="text/css">
     <style>
-        .menu{
+        .menu {
             clear: both;
             background-color: #343a40;
         }
 
-        .menu a{
+        .menu a {
             color: white;
         }
     </style>
@@ -24,26 +24,29 @@
 </div>
 <div class="content">
     <h1>Zarejestruj się</h1>
-    <form th:action="@{/register}" method="post">
+    <form method="post" th:action="@{/register}">
         <div class="mb-3">
-            <label for="firstName" class="form-label">Imię:</label>
-            <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Podaj imię" required autofocus>
+            <label class="form-label" for="firstName">Imię:</label>
+            <input autofocus class="form-control" id="firstName" name="firstName" placeholder="Podaj imię" required
+                   type="text">
         </div>
         <div class="mb-3">
-            <label for="lastName" class="form-label">Nazwisko:</label>
-            <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Podaj nazwisko" required>
+            <label class="form-label" for="lastName">Nazwisko:</label>
+            <input class="form-control" id="lastName" name="lastName" placeholder="Podaj nazwisko" required type="text">
         </div>
         <div class="mb-3">
-            <label for="email" class="form-label">E-mail:</label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="Podaj e-mail" required>
+            <label class="form-label" for="email">E-mail:</label>
+            <input class="form-control" id="email" name="email" placeholder="Podaj e-mail" required type="email">
         </div>
         <div class="mb-3">
-            <label for="password" class="form-label">Hasło:</label>
-            <input type="password" class="form-control" id="password" placeholder="Podaj hasło" name="password" minlength="8" required>
+            <label class="form-label" for="password">Hasło:</label>
+            <input class="form-control" id="password" minlength="8" name="password" placeholder="Podaj hasło"
+                   required type="password">
         </div>
         <div class="mb-3">
-            <label for="passwordRepeated" class="form-label">Powtórz hasło:</label>
-            <input type="password" class="form-control" id="passwordRepeated" placeholder="Powtórz hasło" name="passwordRepeated" minlength="8" required>
+            <label class="form-label" for="passwordRepeated">Powtórz hasło:</label>
+            <input class="form-control" id="passwordRepeated" minlength="8" name="passwordRepeated"
+                   placeholder="Powtórz hasło" required type="password">
         </div>
         <div class="mb-3">
             <button class="btn btn-primary">Zarejestruj</button>

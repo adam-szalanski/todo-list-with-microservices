@@ -50,12 +50,12 @@ public class WebService {
         String sortByParameter = "sortBy=" + sortBy;
         String orderDescParameter = "orderDesc=" + orderDesc;
         String url = BASE_URL + TODO_URL + "?" + sortByParameter + "&" + orderDescParameter;
-        if (filterFinished!= null && !"null".equals(filterFinished))
-            url+="&finished="+filterFinished;
-        if (filterDateBefore!=null)
-            url+="&dateBefore="+filterDateBefore;
-        if (filterDateAfter!=null)
-            url+="&dateAfter="+filterDateAfter;
+        if (filterFinished != null && !"null".equals(filterFinished))
+            url += "&finished=" + filterFinished;
+        if (filterDateBefore != null)
+            url += "&dateBefore=" + filterDateBefore;
+        if (filterDateAfter != null)
+            url += "&dateAfter=" + filterDateAfter;
         return List.of(template.getForObject(url, TodoResponse[].class));
     }
 

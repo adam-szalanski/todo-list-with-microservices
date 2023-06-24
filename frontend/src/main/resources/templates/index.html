@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Zadania</title>
-    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{style.css}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{style.css}" type="text/css">
     <style>
-        .menu{
+        .menu {
             clear: both;
             background-color: #343a40;
         }
 
-        .menu a{
+        .menu a {
             color: white;
         }
     </style>
@@ -38,30 +38,30 @@
         <div class="content-menu">
             <div class="todo-filter" th:if="!${todoList.isEmpty()}">
                 <h1>Filtruj zadania</h1>
-                <form class="mb-3" th:action="@{/filter}" method="post">
-                    <label for="isFinished" class="form-label">Zakończone:</label>
-                    <select class="form-select" name="isFinished" id="isFinished">
-                        <option value="null" selected>Bez znaczenia</option>
+                <form class="mb-3" method="post" th:action="@{/filter}">
+                    <label class="form-label" for="isFinished">Zakończone:</label>
+                    <select class="form-select" id="isFinished" name="isFinished">
+                        <option selected value="null">Bez znaczenia</option>
                         <option value="false">Nie</option>
                         <option value="true">Tak</option>
                     </select>
-                    <label for="deadlineFrom" class="form-label">Deadline od:</label>
-                    <input type="datetime-local" class="form-control" id="deadlineFrom" name="deadlineFrom">
-                    <label for="deadlineTo" class="form-label">Deadline do:</label>
-                    <input type="datetime-local" class="form-control" id="deadlineTo" name="deadlineTo">
-                    <button type="submit" class="btn btn-primary mt-3">Filtruj</button>
+                    <label class="form-label" for="deadlineFrom">Deadline od:</label>
+                    <input class="form-control" id="deadlineFrom" name="deadlineFrom" type="datetime-local">
+                    <label class="form-label" for="deadlineTo">Deadline do:</label>
+                    <input class="form-control" id="deadlineTo" name="deadlineTo" type="datetime-local">
+                    <button class="btn btn-primary mt-3" type="submit">Filtruj</button>
                 </form>
             </div>
             <div class="add-todo">
                 <h1>Dodaj nowe zadanie</h1>
-                <form th:action="@{/addTodo}" method="post">
-                    <label for="taskName" class="form-label">Nazwa:</label>
-                    <input type="text" class="form-control mb-3" id="taskName" name="taskName" required autofocus>
-                    <label for="description" class="form-label">Opis:</label>
-                    <input type="text" class="form-control mb-3" id="description" name="description" required>
-                    <label for="deadline" class="form-label">Deadline:</label>
-                    <input type="datetime-local" class="form-control mb-3" id="deadline" name="deadline">
-                    <button type="submit" class="btn btn-primary">Dodaj</button>
+                <form method="post" th:action="@{/addTodo}">
+                    <label class="form-label" for="taskName">Nazwa:</label>
+                    <input autofocus class="form-control mb-3" id="taskName" name="taskName" required type="text">
+                    <label class="form-label" for="description">Opis:</label>
+                    <input class="form-control mb-3" id="description" name="description" required type="text">
+                    <label class="form-label" for="deadline">Deadline:</label>
+                    <input class="form-control mb-3" id="deadline" name="deadline" type="datetime-local">
+                    <button class="btn btn-primary" type="submit">Dodaj</button>
                 </form>
             </div>
         </div>
@@ -70,10 +70,10 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th><a th:text="'Nazwa'" th:href="@{/sortByName}"/></th>
-                    <th><a th:text="'Opis'" th:href="@{/sortByDescription}"/></th>
-                    <th><a th:text="'Deadline'" th:href="@{/sortByDeadline}"/></th>
-                    <th><a th:text="'Czy wykonane'" th:href="@{/sortByIsFinished}"/></th>
+                    <th><a th:href="@{/sortByName}" th:text="'Nazwa'"/></th>
+                    <th><a th:href="@{/sortByDescription}" th:text="'Opis'"/></th>
+                    <th><a th:href="@{/sortByDeadline}" th:text="'Deadline'"/></th>
+                    <th><a th:href="@{/sortByIsFinished}" th:text="'Czy wykonane'"/></th>
                     <th></th>
                 </tr>
                 </thead>
@@ -84,12 +84,12 @@
                     <td th:text="${#temporals.format(todo.deadline, 'dd-MM-yyyy HH:mm:ss')}"/>
                     <td>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" th:checked="${todo.isFinished}" disabled>
+                            <input class="form-check-input" disabled th:checked="${todo.isFinished}" type="checkbox">
                         </div>
                     </td>
                     <td>
-                        <a class="btn btn-danger" th:text="USUŃ" th:href="@{/delete/{id}(id=${todo.id})}"/>
-                        <a class="btn btn-primary" th:text="EDYTUJ" th:href="@{/edit/{id}(id=${todo.id})}"/>
+                        <a class="btn btn-danger" th:href="@{/delete/{id}(id=${todo.id})}" th:text="USUŃ"/>
+                        <a class="btn btn-primary" th:href="@{/edit/{id}(id=${todo.id})}" th:text="EDYTUJ"/>
                     </td>
                 </tr>
                 </tbody>
@@ -99,5 +99,8 @@
     </div>
 
 </div>
+<footer>
+    <a th:text="'Ilość requestów obsłużonych przez backend: '+${requestCount}"/>
+</footer>
 </body>
 </html>
