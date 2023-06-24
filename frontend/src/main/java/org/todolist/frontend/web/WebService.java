@@ -23,6 +23,9 @@ public class WebService {
     public static final String COUNT_REQUESTS_URL = "/metrics/requests";
     public static final String TODO_URL = "/todo";
     public static String jwtToken;
+    // this token should be stored in the browser
+    // otherwise when one user logs in, someone else accessing this page
+    // would also be logged in as this user upon entering
     public static String sortBy = "id";
     public static Boolean orderDesc = false;
     public static String filterFinished = "null";
@@ -53,7 +56,6 @@ public class WebService {
             url+="&dateBefore="+filterDateBefore;
         if (filterDateAfter!=null)
             url+="&dateAfter="+filterDateAfter;
-        System.out.println(url);
         return List.of(template.getForObject(url, TodoResponse[].class));
     }
 

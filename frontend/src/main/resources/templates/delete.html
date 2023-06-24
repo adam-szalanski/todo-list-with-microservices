@@ -2,31 +2,54 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Tasks</title>
+  <title>Usuń zadanie</title>
+  <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{style.css}" rel="stylesheet" type="text/css">
+  <style>
+    .menu{
+      clear: both;
+      background-color: #343a40;
+    }
+
+    .menu a{
+      color: white;
+    }
+  </style>
 </head>
 <body>
 <div class="menu">
-  <h1>TO DO List</h1>
-  <h5>TASKS</h5>
+  <div class="d-flex justify-content-center">
+    <a class="btn btn-outline-light" th:href="@{/index}">Powrót</a>
+  </div>
 </div>
 <div class="content">
+  <h1>Potwierdź usunięcie zadania</h1>
   <div class="todo-form">
     <form th:action="@{/delete/{id}(id=${deletedTask.id})}" method="post">
-      <label for="taskname">Nazwa zadania:</label>
-      <input type="text" id="taskname" name="taskName" placeholder="Podaj nazwę zadania" th:value="${deletedTask.taskName}" disabled>
-      <label for="description">Opis:</label>
-      <input type="text" id="description" name="description" placeholder="Podaj opis zadania" th:value="${deletedTask.description}" disabled>
-      <label for="deadline">Deadline:</label>
-      <input type="datetime-local" id="deadline" name="deadline" placeholder="Podaj deadline" th:value="${deletedTask.deadline}"disabled>
-      <label for="isFinished">Zakończone:</label>
-      <select class="form-select" name="isFinished" id="isFinished" disabled>
-        <option value="false" selected>Nie</option>
-        <option value="true" th:selected="${deletedTask.isFinished()}">Tak</option>
-      </select>
-      <div>
-        <button>Usuń zadanie</button>
+      <div class="mb-3">
+        <label for="taskname" class="form-label">Nazwa zadania:</label>
+        <input type="text" class="form-control" id="taskname" name="taskName" placeholder="Podaj nazwę zadania" th:value="${deletedTask.taskName}" disabled>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Opis:</label>
+        <input type="text" class="form-control" id="description" name="description" placeholder="Podaj opis zadania" th:value="${deletedTask.description}" disabled>
+      </div>
+      <div class="mb-3">
+        <label for="deadline" class="form-label">Deadline:</label>
+        <input type="datetime-local" class="form-control" id="deadline" name="deadline" placeholder="Podaj deadline" th:value="${deletedTask.deadline}" disabled>
+      </div>
+      <div class="mb-3">
+        <label for="isFinished" class="form-label">Zakończone:</label>
+        <select class="form-select" name="isFinished" id="isFinished" disabled>
+          <option value="false" selected>Nie</option>
+          <option value="true" th:selected="${deletedTask.isFinished()}">Tak</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <button class="btn btn-danger">Usuń zadanie</button>
       </div>
     </form>
   </div>
 </div>
 </body>
+</html>

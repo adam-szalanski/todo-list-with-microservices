@@ -2,80 +2,102 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Tasks</title>
+    <title>Zadania</title>
+    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{style.css}" rel="stylesheet" type="text/css">
+    <style>
+        .menu{
+            clear: both;
+            background-color: #343a40;
+        }
+
+        .menu a{
+            color: white;
+        }
+    </style>
 </head>
 <body>
 <div class="menu" th:if="!${loggedIn}">
-    <a th:href="@{/login}">Zaloguj się</a>
-    <a th:href="@{/register}">Zarejestruj się</a>
+    <div class="d-flex justify-content-center">
+        <a class="btn btn-outline-light me-3" th:href="@{/login}">Zaloguj się</a>
+        <a class="btn btn-outline-secondary" th:href="@{/register}">Zarejestruj się</a>
+    </div>
 </div>
 <div class="menu" th:if="${loggedIn}">
-    <a th:href="@{/logout}">Wyloguj</a>
+    <div class="d-flex justify-content-center">
+        <a class="btn btn-outline-light" th:href="@{/logout}">Wyloguj</a>
+    </div>
 </div>
-<div class="content" th:if="${loggedIn}">
-    <div class="errors" th:if="${errorMessage!=null}">
+<div class="errors" th:if="${errorMessage!=null}">
+    <div class="alert alert-danger" role="alert">
         <a th:text="${errorMessage}"/>
     </div>
+</div>
+<div class="content" th:if="${loggedIn}">
     <div class="todo-list-and-filter">
-        <div class="todo-list">
+        <div class="content-menu">
+            <div class="todo-filter" th:if="!${todoList.isEmpty()}">
+                <h1>Filtruj zadania</h1>
+                <form class="mb-3" th:action="@{/filter}" method="post">
+                    <label for="isFinished" class="form-label">Zakończone:</label>
+                    <select class="form-select" name="isFinished" id="isFinished">
+                        <option value="null" selected>Bez znaczenia</option>
+                        <option value="false">Nie</option>
+                        <option value="true">Tak</option>
+                    </select>
+                    <label for="deadlineFrom" class="form-label">Deadline od:</label>
+                    <input type="datetime-local" class="form-control" id="deadlineFrom" name="deadlineFrom">
+                    <label for="deadlineTo" class="form-label">Deadline do:</label>
+                    <input type="datetime-local" class="form-control" id="deadlineTo" name="deadlineTo">
+                    <button type="submit" class="btn btn-primary mt-3">Filtruj</button>
+                </form>
+            </div>
+            <div class="add-todo">
+                <h1>Dodaj nowe zadanie</h1>
+                <form th:action="@{/addTodo}" method="post">
+                    <label for="taskName" class="form-label">Nazwa:</label>
+                    <input type="text" class="form-control mb-3" id="taskName" name="taskName" required autofocus>
+                    <label for="description" class="form-label">Opis:</label>
+                    <input type="text" class="form-control mb-3" id="description" name="description" required>
+                    <label for="deadline" class="form-label">Deadline:</label>
+                    <input type="datetime-local" class="form-control mb-3" id="deadline" name="deadline">
+                    <button type="submit" class="btn btn-primary">Dodaj</button>
+                </form>
+            </div>
+        </div>
+        <div class="todo-list" th:if="!${todoList.isEmpty()}">
             <h1>Twoje zadania</h1>
-            <table>
+            <table class="table table-striped">
                 <thead>
                 <tr>
-                    <td><a th:text="'Nazwa'" th:href="@{/sortByName}"/></td>
-                    <td><a th:text="'Opis'" th:href="@{/sortByDescription}"/></td>
-                    <td><a th:text="'Deadline'" th:href="@{/sortByDeadline}"/></td>
-                    <td><a th:text="'Czy wykonane'" th:href="@{/sortByIsFinished}"/></td>
-                    <td></td>
+                    <th><a th:text="'Nazwa'" th:href="@{/sortByName}"/></th>
+                    <th><a th:text="'Opis'" th:href="@{/sortByDescription}"/></th>
+                    <th><a th:text="'Deadline'" th:href="@{/sortByDeadline}"/></th>
+                    <th><a th:text="'Czy wykonane'" th:href="@{/sortByIsFinished}"/></th>
+                    <th></th>
                 </tr>
                 </thead>
+                <tbody>
                 <tr th:each="todo: ${todoList}">
                     <td th:text="${todo.taskName}"/>
                     <td th:text="${todo.description}"/>
                     <td th:text="${#temporals.format(todo.deadline, 'dd-MM-yyyy HH:mm:ss')}"/>
-                    <td><input type="checkbox" th:checked="${todo.isFinished}" disabled></td>
                     <td>
-                        <a th:text="USUŃ" th:href="@{/delete/{id}(id=${todo.id})}"/>
-                        <a th:text="EDYTUJ" th:href="@{/edit/{id}(id=${todo.id})}"/>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" th:checked="${todo.isFinished}" disabled>
+                        </div>
+                    </td>
+                    <td>
+                        <a class="btn btn-danger" th:text="USUŃ" th:href="@{/delete/{id}(id=${todo.id})}"/>
+                        <a class="btn btn-primary" th:text="EDYTUJ" th:href="@{/edit/{id}(id=${todo.id})}"/>
                     </td>
                 </tr>
+                </tbody>
             </table>
         </div>
-        <div class="todo-filter">
-            <h1>Filtruj zadania</h1>
-            <form th:action="@{/filter}" method="post">
-                <label for="isFinished">Zakończone:</label>
-                <select class="form-select" name="isFinished" id="isFinished">
-                    <option value="null" selected>Bez znaczenia</option>
-                    <option value="false">Nie</option>
-                    <option value="true">Tak</option>
-                </select>
-                <label for="deadlineBefore">Deadline przed:</label>
-                <input type="datetime-local" id="deadlineBefore" name="deadlineBefore" placeholder="Podaj deadline">
-                <label for="deadlineAfter">Deadline po:</label>
-                <input type="datetime-local" id="deadlineAfter" name="deadlineAfter" placeholder="Podaj deadline">
-                <div>
-                    <button>Filtruj</button>
-                </div>
-            </form>
-        </div>
+
     </div>
-    <div class="todo-form">
-        <h1>Dodaj zadanie</h1>
-        <form th:action="@{/addTodo}" method="post">
-            <label for="taskname">Nazwa zadania:</label>
-            <input type="text" id="taskname" name="taskName" placeholder="Podaj nazwę zadania" required autofocus>
-            <label for="description">Opis:</label>
-            <input type="text" id="description" name="description" placeholder="Podaj opis zadania" required>
-            <label for="deadline">Deadline:</label>
-            <input type="datetime-local" id="deadline" name="deadline" placeholder="Podaj deadline">
-            <div>
-                <button>Dodaj zadanie</button>
-            </div>
-        </form>
-    </div>
+
 </div>
-<footer>
-    <a th:text="${requestCount}"/>
-</footer>
 </body>
+</html>
